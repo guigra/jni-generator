@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="asm-4.1">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/prod/asm-4.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/prod/freemarker.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/prod/guava-14.0.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/lib/prod/asm-4.1-src.zip!/" />
+    </SOURCES>
+  </library>
+</component>

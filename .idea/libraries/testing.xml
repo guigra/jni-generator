@@ -1,0 +1,14 @@
+<component name="libraryTable">
+  <library name="testing">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/testing/jmock-2.6.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/testing/jmock-junit4-2.6.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/testing/junit-dep-4.10.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/lib/testing/jmock-2.6.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/testing/jmock-junit4-2.6.0.jar!/" />
+    </SOURCES>
+  </library>
+</component>
