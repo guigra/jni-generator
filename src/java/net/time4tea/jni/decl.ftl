@@ -5,19 +5,25 @@ typedef struct {
     int               count;
 } NativeRegistration;
 
-static const JNINativeMethod ${classDecl}[] =
+
+<#list classes as class>
+static const JNINativeMethod ${class.decl}[] =
 {
-    <#list methods as method>
+    <#list class.methods as method>
     { ${"\"${method.name}\""?right_pad(50)}, ${"\"${method.signature}\""?right_pad(100)}, ${"&${method.name}"?right_pad(50)} } <#if method_has_next>,</#if>
     </#list>
 };
 
+</#list>
+
 static const NativeRegistration registrations[] =
 {
-  { "${className}",  ${classDecl}, sizeof(${classDecl}) / sizeof(JNINativeMethod) }
-}
+  <#list classes as class>
+  { "${class.internalName}",  ${class.decl}, sizeof(${class.decl}) / sizeof(JNINativeMethod) } <#if class_has_next>,</#if>
+  </#list>
+};
 
-void register_natives_${classDecl}(JNIEnv *env)) {
+void register_natives_xxx(JNIEnv *env)) {
     int classes_to_register = sizeof(registrations) / sizeof(NativeReigstration);
 
     for ( int i = 0 ; i < classes_to_register ; i++ ) {
