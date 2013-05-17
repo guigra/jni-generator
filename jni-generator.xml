@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="jni-generator" default="all">
+  
+  
+  <property file="jni-generator.properties"/>
+  <!-- Uncomment the following property if no tests compilation is needed -->
+  <!-- 
+  <property name="skip.tests" value="true"/>
+   -->
+  
+  <!-- Compiler options -->
+  
+  <property name="compiler.debug" value="on"/>
+  <property name="compiler.generate.no.warnings" value="off"/>
+  <property name="compiler.args" value=""/>
+  <property name="compiler.max.memory" value="128m"/>
+  <patternset id="ignored.files">
+    <exclude name="**/CVS/**"/>
+    <exclude name="**/SCCS/**"/>
+    <exclude name="**/RCS/**"/>
+    <exclude name="**/rcs/**"/>
+    <exclude name="**/.DS_Store/**"/>
+    <exclude name="**/.svn/**"/>
+    <exclude name="**/.pyc/**"/>
+    <exclude name="**/.pyo/**"/>
+    <exclude name="**/*.pyc/**"/>
+    <exclude name="**/*.pyo/**"/>
+    <exclude name="**/.git/**"/>
+    <exclude name="**/*.hprof/**"/>
+    <exclude name="**/_svn/**"/>
+    <exclude name="**/.hg/**"/>
+    <exclude name="**/*.lib/**"/>
+    <exclude name="**/*~/**"/>
+    <exclude name="**/__pycache__/**"/>
+    <exclude name="**/.bundle/**"/>
+    <exclude name="**/*.rbc/**"/>
+    <exclude name="**/*.o/**"/>
+    <exclude name="**/*.obj/**"/>
+  </patternset>
+  <patternset id="library.patterns">
+    <include name="*.war"/>
+    <include name="*.ear"/>
+    <include name="*.apk"/>
+    <include name="*.zip"/>
+    <include name="*.swc"/>
+    <include name="*.ane"/>
+    <include name="*.egg"/>
+    <include name="*.jar"/>
+  </patternset>
+  <patternset id="compiler.resources">
+    <include name="**/?*.properties"/>
+    <include name="**/?*.xml"/>
+    <include name="**/?*.gif"/>
+    <include name="**/?*.png"/>
+    <include name="**/?*.jpeg"/>
+    <include name="**/?*.jpg"/>
+    <include name="**/?*.html"/>
+    <include name="**/?*.dtd"/>
+    <include name="**/?*.tld"/>
+    <include name="**/?*.ftl"/>
+  </patternset>
+  
+  
+  <!-- Project Libraries -->
+  
+  <path id="library.asm-4.1.classpath">
+    <pathelement location="${basedir}/lib/prod/asm-4.1.jar"/>
+    <pathelement location="${basedir}/lib/prod/freemarker.jar"/>
+    <pathelement location="${basedir}/lib/prod/guava-14.0.1.jar"/>
+  </path>
+  
+  <path id="library.testing.classpath">
+    <pathelement location="${basedir}/lib/testing/jmock-2.6.0.jar"/>
+    <pathelement location="${basedir}/lib/testing/jmock-junit4-2.6.0.jar"/>
+    <pathelement location="${basedir}/lib/testing/junit-dep-4.10.jar"/>
+  </path>
+  
+  
+  <!-- Global Libraries -->
+  
+  <!-- Modules -->
+  
+  
+  <!-- Module jni-generator -->
+  
+  <dirname property="module.jni-generator.basedir" file="${ant.file}"/>
+  
+  
+  
+  <property name="compiler.args.jni-generator" value="${compiler.args}"/>
+  
+  <property name="jni-generator.output.dir" value="${module.jni-generator.basedir}/out/production/jni-generator"/>
+  <property name="jni-generator.testoutput.dir" value="${module.jni-generator.basedir}/out/test/jni-generator"/>
+  
+  <path id="jni-generator.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="jni-generator.module.production.classpath">
+    <path refid="library.asm-4.1.classpath"/>
+  </path>
+  
+  <path id="jni-generator.runtime.production.module.classpath">
+    <pathelement location="${jni-generator.output.dir}"/>
+    <path refid="library.asm-4.1.classpath"/>
+  </path>
+  
+  <path id="jni-generator.module.classpath">
+    <pathelement location="${jni-generator.output.dir}"/>
+    <path refid="library.asm-4.1.classpath"/>
+    <path refid="library.testing.classpath"/>
+  </path>
+  
+  <path id="jni-generator.runtime.module.classpath">
+    <pathelement location="${jni-generator.testoutput.dir}"/>
+    <pathelement location="${jni-generator.output.dir}"/>
+    <path refid="library.asm-4.1.classpath"/>
+    <path refid="library.testing.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.jni-generator">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.jni-generator">
+    <patternset refid="excluded.from.module.jni-generator"/>
+  </patternset>
+  
+  <path id="jni-generator.module.sourcepath">
+    <dirset dir="${module.jni-generator.basedir}">
+      <include name="src/java"/>
+    </dirset>
+  </path>
+  
+  <path id="jni-generator.module.test.sourcepath">
+    <dirset dir="${module.jni-generator.basedir}">
+      <include name="src/test"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.jni-generator" depends="compile.module.jni-generator.production,compile.module.jni-generator.tests" description="Compile module jni-generator"/>
+  
+  <target name="compile.module.jni-generator.production" description="Compile module jni-generator; production classes">
+    <mkdir dir="${jni-generator.output.dir}"/>
+    <javac destdir="${jni-generator.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true">
+      <compilerarg line="${compiler.args.jni-generator}"/>
+      <bootclasspath refid="jni-generator.module.bootclasspath"/>
+      <classpath refid="jni-generator.module.production.classpath"/>
+      <src refid="jni-generator.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.jni-generator"/>
+    </javac>
+    
+    <copy todir="${jni-generator.output.dir}">
+      <fileset dir="${module.jni-generator.basedir}/src/java">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.jni-generator.tests" depends="compile.module.jni-generator.production" description="compile module jni-generator; test classes" unless="skip.tests">
+    <mkdir dir="${jni-generator.testoutput.dir}"/>
+    <javac destdir="${jni-generator.testoutput.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true">
+      <compilerarg line="${compiler.args.jni-generator}"/>
+      <bootclasspath refid="jni-generator.module.bootclasspath"/>
+      <classpath refid="jni-generator.module.classpath"/>
+      <src refid="jni-generator.module.test.sourcepath"/>
+      <patternset refid="excluded.from.compilation.jni-generator"/>
+    </javac>
+    
+    <copy todir="${jni-generator.testoutput.dir}">
+      <fileset dir="${module.jni-generator.basedir}/src/test">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="clean.module.jni-generator" description="cleanup module">
+    <delete dir="${jni-generator.output.dir}"/>
+    <delete dir="${jni-generator.testoutput.dir}"/>
+  </target>
+  
+  <target name="init" description="Build initialization">
+    <!-- Perform any build initialization in this target -->
+  </target>
+  
+  <target name="clean" depends="clean.module.jni-generator" description="cleanup all"/>
+  
+  <target name="build.modules" depends="init, clean, compile.module.jni-generator" description="build all modules"/>
+  
+  <target name="init.artifacts">
+    <property name="artifacts.temp.dir" value="${basedir}/__artifacts_temp"/>
+    <property name="artifact.output.jni-generator:jar" value="${basedir}/out/artifacts/jni_generator_jar"/>
+    <mkdir dir="${artifacts.temp.dir}"/>
+    <property name="temp.jar.path.jni-generator.jar" value="${artifacts.temp.dir}/jni-generator.jar"/>
+  </target>
+  
+  <target name="artifact.jni-generator:jar" depends="init.artifacts, compile.module.jni-generator" description="Build &#39;jni-generator:jar&#39; artifact">
+    <property name="artifact.temp.output.jni-generator:jar" value="${artifacts.temp.dir}/jni_generator_jar"/>
+    <mkdir dir="${artifact.temp.output.jni-generator:jar}"/>
+    <jar destfile="${temp.jar.path.jni-generator.jar}" duplicate="preserve" filesetmanifest="mergewithoutmain">
+      <zipfileset file="${basedir}/src/java/META-INF/MANIFEST.MF" prefix="META-INF"/>
+      <zipfileset dir="${jni-generator.output.dir}"/>
+      <zipfileset src="${basedir}/lib/prod/asm-4.1.jar"/>
+      <zipfileset src="${basedir}/lib/prod/freemarker.jar"/>
+      <zipfileset src="${basedir}/lib/prod/guava-14.0.1.jar"/>
+    </jar>
+    <copy file="${temp.jar.path.jni-generator.jar}" tofile="${artifact.temp.output.jni-generator:jar}/jni-generator.jar"/>
+  </target>
+  
+  <target name="build.all.artifacts" depends="artifact.jni-generator:jar" description="Build all artifacts">
+    <mkdir dir="${artifact.output.jni-generator:jar}"/>
+    <copy todir="${artifact.output.jni-generator:jar}">
+      <fileset dir="${artifact.temp.output.jni-generator:jar}"/>
+    </copy>
+    
+    <!-- Delete temporary files -->
+    <delete dir="${artifacts.temp.dir}"/>
+  </target>
+  
+  <target name="all" depends="build.modules, build.all.artifacts" description="build all"/>
+</project>

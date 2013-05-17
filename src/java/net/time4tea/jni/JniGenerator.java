@@ -16,7 +16,6 @@ import static com.google.common.collect.Maps.newHashMap;
 
 public class JniGenerator {
 
-
     public static void main(String[] args) throws IOException, Templates.TemplateProcessingException {
 
         NativeClassParser parser = new NativeClassParser();
