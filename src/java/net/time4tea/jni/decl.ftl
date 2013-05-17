@@ -32,7 +32,7 @@ static const NativeRegistration registrations[] =
 };
 
 void register_natives_xxx(JNIEnv *env)) {
-    int classes_to_register = sizeof(registrations) / sizeof(NativeReigstration);
+    int classes_to_register = sizeof(registrations) / sizeof(NativeRegistration);
 
     for ( int i = 0 ; i < classes_to_register ; i++ ) {
         NativeRegistration registration = registrations[i];
